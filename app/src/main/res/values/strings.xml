@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Fingerprint Verification</string>
+    <string name="title_activity_register">Register</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+
+    <string name="prompt_first_name">First Name</string>
+    <string name="prompt_last_name">Last Name</string>
+    <string name="prompt_mat_number">Matriculation Number</string>
+    <string name="prompt_level">Level</string>
+    <string name="prompt_dept">Department</string>
+    <string name="prompt_faculty">Faculty</string>
+    <string name="prompt_phone_number">Phone Number</string>
+
+    <string name="prompt_course_code">Course Code</string>
+    <string name="prompt_course_name">Course Name</string>
+    <string name="prompt_course_registered_by">Course Registered by</string>
+
+    <string name="action_register">Register</string>
+
+    <string name="action_previous">Previous</string>
+    <string name="action_next">Next</string>
+
+    <string name="action_save">Save</string>
+
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+</resources>

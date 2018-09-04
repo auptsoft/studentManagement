@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:animateLayoutChanges="true">
+
+    <ProgressBar
+        android:id="@+id/progress_bar_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/connection_status_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="not connected"
+        android:textAlignment="center"/>
+
+    <FrameLayout
+        android:id="@+id/verify_brief_student_frame_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/upload_finger_print_view_layout_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:visibility="visible">
+        <android.support.v7.widget.CardView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:cardCornerRadius="50dp"
+            android:elevation="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="50sp"
+                android:text="1"
+                android:textStyle="bold"
+                android:layout_gravity="center"/>
+        </android.support.v7.widget.CardView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Module Preparation"
+            android:textSize="20sp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tap on PREPARE MODULE to upload fingerprints of the students registered in the course to the module or verification"
+            android:textAlignment="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
+        <Button
+            android:id="@+id/prepare_module_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Prepare Module"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/verify_view_layout_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:visibility="gone">
+        <android.support.v7.widget.CardView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:padding="10sp"
+            app:cardCornerRadius="0dp"
+            app:cardElevation="21dp"
+            android:layout_marginBottom="10dp">
+            <ImageView
+                android:id="@+id/fingerprint_img_view_id"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_fingerprint_black_24dp"/>
+        </android.support.v7.widget.CardView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Verify Student"
+            android:textSize="20sp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Place your finger and tap VERIFY to verify student"
+            android:textAlignment="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
+        <Button
+            android:id="@+id/verify_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Verify"/>
+    </LinearLayout>
+</LinearLayout>

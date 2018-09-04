@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/archdiocese_item_view_id"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        app:cardCornerRadius="25dp"
+        android:layout_marginLeft="10dp">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_bluetooth_searching_black_24dp"
+        android:scaleType="fitXY"
+        android:tint="#55aacc"
+        />
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:cardBackgroundColor="#00ffffff"
+        app:cardCornerRadius="1dp"
+        app:cardElevation="0dp">
+
+        <LinearLayout
+            android:id="@+id/item_view_id"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/device_name_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Archdiocese of Benin"
+                android:textColor="#212121"
+                android:textAlignment="inherit"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/device_address_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Most Rev. Dr. Augustine Obiora Akubeze"
+                android:textAlignment="inherit"
+                android:textSize="13sp"
+                android:layout_marginBottom="1dp"
+                 />
+            <View
+                android:id="@+id/line_id"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#ccc"
+                android:layout_marginTop="10dp"/>
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+</LinearLayout>

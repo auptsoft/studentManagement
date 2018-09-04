@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:id="@+id/add_course_title_id"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:text="Add Course"
+        android:layout_gravity="center"
+        android:background="@color/colorPrimary"
+        android:textSize="30sp"
+        android:paddingLeft="20dp"
+        android:paddingTop="5dp"
+        android:elevation="10dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/course_code_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Course Code"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/course_title_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Course Title" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/description_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Lecturer(s)" />
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+    <Button
+        android:id="@+id/add_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add"
+        android:drawableLeft="@drawable/ic_add_black_24dp"/>
+</LinearLayout>
