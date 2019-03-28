@@ -1,10 +1,12 @@
 package com.example.andrewoshodin.fingerprintregister;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -24,6 +26,7 @@ import android.widget.Toast;
 import com.example.andrewoshodin.fingerprintregister.models.AppState;
 import com.example.andrewoshodin.fingerprintregister.models.Course;
 import com.example.andrewoshodin.fingerprintregister.models.Student;
+import com.example.andrewoshodin.fingerprintregister.models.TemplateIdManager;
 
 /**
  * Created by Andrew Oshodin on 8/21/2018.
@@ -41,11 +44,12 @@ public class StudentDetailActivity extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.student_detail_activity);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         layoutInflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
-
         toolbar = (Toolbar)findViewById(R.id.student_detail_toolbar_id);
         toolbar.setTitle(AppState.activeStudent.getFirstName()+ " "+AppState.activeStudent.getLastName());
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         passportView = (ImageView)findViewById(R.id.passport_view_id);
         nameView = (TextView)findViewById(R.id.name_view_id);
@@ -59,7 +63,7 @@ public class StudentDetailActivity extends AppCompatActivity {
     void updateView() {
 
         passportView.setImageURI(Uri.parse(AppState.activeStudent.getPassportUrl()));
-        nameView.setText(AppState.activeStudent.getFirstName()+" "+AppState.activeStudent.getLastName());
+        nameView.setText(AppState.activeStudent.getLastName()+" "+AppState.activeStudent.getFirstName());
         matNumberView.setText(AppState.activeStudent.getMatNumber());
 
         detailLayout.removeAllViews();
@@ -100,13 +104,31 @@ public class StudentDetailActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 5 && resultCode == Activity.RESULT_OK) {
+            AppState.studentEditState = true;
+            startActivity(new Intent(this, Register.class));
+        } else if (requestCode == 6 && requestCode == Activity.RESULT_OK) {
+            TemplateIdManager.deleteWithMatNo(getBaseContext(), AppState.activeStudent.getMatNumber());
+            sendBroadcast(new Intent(Student.STUDENT_ADDED_INTENT));
+            Toast.makeText(getBaseContext(), AppState.activeStudent.getFirstName() +
+                    " " + AppState.activeStudent.getLastName() + " removed successfully", Toast.LENGTH_LONG).show();
+            finish();
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
             case 1:
-                AppState.studentEditState = true;
-                startActivity(new Intent(this, Register.class));
+                startActivityForResult(new Intent(this, AuthenticateActivity.class), 5);
                 break;
             case 2:
+
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("Delete Confirmation");
                 builder.setMessage("Do you want to remove "+AppState.activeStudent.getFirstName()+
@@ -116,10 +138,7 @@ public class StudentDetailActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (AppState.activeStudent.delete(getBaseContext()) >0) {
-                            sendBroadcast(new Intent(Student.STUDENT_ADDED_INTENT));
-                            Toast.makeText(getBaseContext(), AppState.activeStudent.getFirstName() +
-                                    " " + AppState.activeStudent.getLastName() + " removed successfully", Toast.LENGTH_LONG).show();
-                            finish();
+                            startActivityForResult(new Intent(getBaseContext(), AuthenticateActivity.class), 5);
                         } else {
                             Toast.makeText(getBaseContext(), "Error occured during operation", Toast.LENGTH_LONG).show();
                         }

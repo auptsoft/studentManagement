@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.andrewoshodin.fingerprintregister.comm.MFingerprintManager;
 import com.example.andrewoshodin.fingerprintregister.models.AppState;
+import com.example.andrewoshodin.fingerprintregister.models.TemplateIdManager;
 
 /**
  * Created by Andrew Oshodin on 8/22/2018.
@@ -42,8 +43,17 @@ public class TakeFingerprintFragment extends Fragment implements View.OnClickLis
     @Override
     public void onClick(View view) {
         if (view.equals(start)) {
+            String templateId;
+            if (AppState.studentEditState == true) {
+                 String tempId = TemplateIdManager.getTemplateId(getContext(), AppState.activeStudent.getMatNumber());
+                 if (tempId != null) templateId = tempId;
+                 else templateId = TemplateIdManager.getMinTemplateIdSlot(getContext());
+            }else {
+                templateId = TemplateIdManager.getMinTemplateIdSlot(getContext());
+            }
+            sendToast(templateId);
             if (AppState.ioCommunication != null) {
-                AppState.mFingerprintManager = new MFingerprintManager(AppState.ioCommunication);
+                //AppState.mFingerprintManager = new MFingerprintManager(AppState.ioCommunication);
                 /*AppState.mFingerprintManager.getTemplate(new MFingerprintManager.OnReceiveTemplateListener() {
                     @Override
                     public void onReceiveAck1(MFingerprintManager.Ack ack, String ackString) {
@@ -68,7 +78,13 @@ public class TakeFingerprintFragment extends Fragment implements View.OnClickLis
 
 
                 start.setEnabled(false);
-                AppState.mFingerprintManager.sendData(MFingerprintManager.GET_FINGERPRINT,10000, new MFingerprintManager.OnAcknowledgementListener() {
+
+                 if (templateId==null) {
+                     sendToast("Fingerprint module full. Try deleting redundant courses or students");
+                     return;
+                 }
+                AppState.mFingerprintManager.sendData(MFingerprintManager.REGISTER_FINGERPRINT + templateId,
+                        10000, new MFingerprintManager.OnAcknowledgementListener() {
                     @Override
                     public void onAcknowledgement(MFingerprintManager.Ack ack, String ackString) {
                         switch (ack) {
@@ -91,14 +107,20 @@ public class TakeFingerprintFragment extends Fragment implements View.OnClickLis
                             case ACKNOWLEDGED:
                                 //sendToast(ackString==null?"null received":ackString);
                                 if (ackString != null) {
-                                    if (ackString.equals("E")) {
-                                        sendToast("Error occurred while taking fingerprint. " +
-                                                "\n Place your finger and tap Start to try again");
+                                    if (ackString.charAt(0)=='E') {
+                                        char errorCode = ackString.charAt(1);
+                                        if (errorCode == 'R') {
+                                            sendToast("Error occurred while taking fingerprint of student. TRY AGAIN." +
+                                                    "If error persist, CLEAN the SURFACE of the module and try again.");
+                                        } else {
+                                            sendToast("Error occurred while taking fingerprint try again.");
+                                        }
                                         start.setEnabled(true);
                                     } else {
                                         Intent intent = new Intent();
                                         intent.putExtra(FINGERPRINT_KEY, ackString);
                                         getActivity().setResult(Activity.RESULT_OK, intent);
+                                        sendToast(ackString);
                                         sendToast("Fingerprint taken successfully");
                                         getActivity().finish();
                                     }
@@ -114,6 +136,6 @@ public class TakeFingerprintFragment extends Fragment implements View.OnClickLis
     }
 
     void sendToast(String tst) {
-        Toast.makeText(getContext(), tst, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), tst, Toast.LENGTH_LONG).show();
     }
 }

@@ -1,6 +1,7 @@
 package com.example.andrewoshodin.fingerprintregister;
 
 import android.bluetooth.BluetoothSocket;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.example.andrewoshodin.fingerprintregister.comm.BluetoothConnectionInterface;
 import com.example.andrewoshodin.fingerprintregister.comm.BluetoothManager;
 import com.example.andrewoshodin.fingerprintregister.comm.IOCommunication;
+import com.example.andrewoshodin.fingerprintregister.comm.MFingerprintManager;
 import com.example.andrewoshodin.fingerprintregister.models.AppState;
 
 /**
@@ -33,6 +35,7 @@ public class TakeFingerprintActivity extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.take_fingerprint_activity);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         toolbar = (Toolbar)findViewById(R.id.toolbar_id);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Take Fingerprint");
@@ -75,7 +78,7 @@ public class TakeFingerprintActivity extends AppCompatActivity {
                 connectionStatusView.setText("Connecting...");
                 connectionStatusView.setTextColor(Color.YELLOW);
                 String address = AppState.sharedPreferences.getString(AppState.BLUETOOTH_ADDRESS_PROPERTY,
-                        "98:D3:61:F5:DC:E5");
+                        "FC:3D:03:F9:B8:80");
                 AppState.bluetoothManager.connectToDeviceAsync(address, new BluetoothConnectionInterface() {
                     @Override
                     public void onConnected(BluetoothSocket bluetoothSocket) {
@@ -86,6 +89,7 @@ public class TakeFingerprintActivity extends AppCompatActivity {
                         AppState.bluetoothManager.connectionState = true;
                         AppState.ioCommunication = new IOCommunication(AppState.bluetoothManager.getInputStream(),
                                 AppState.bluetoothManager.getOutputStream());
+                        AppState.mFingerprintManager = new MFingerprintManager(AppState.ioCommunication);
                     }
 
                     @Override

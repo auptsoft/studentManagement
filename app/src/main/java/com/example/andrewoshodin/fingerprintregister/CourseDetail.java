@@ -1,5 +1,6 @@
 package com.example.andrewoshodin.fingerprintregister;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -41,8 +42,16 @@ public class CourseDetail extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View view) {
-        AppState.courseEditState = true;
-        new AddCourse().show(getActivity().getSupportFragmentManager(), "Edit Course");
+        startActivityForResult(new Intent(getContext(), AuthenticateActivity.class), AppState.AUTHENTICATE_REQUEST_CODE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == AppState.AUTHENTICATE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            AppState.courseEditState = true;
+            new AddCourse().show(getActivity().getSupportFragmentManager(), "Edit Course");
+        }
     }
 
     private void initView() {

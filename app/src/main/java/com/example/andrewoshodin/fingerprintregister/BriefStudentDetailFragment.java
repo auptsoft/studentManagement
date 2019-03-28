@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +20,7 @@ import com.example.andrewoshodin.fingerprintregister.models.Student;
  * Created by Andrew Oshodin on 8/22/2018.
  */
 
-public class BriefStudentDetailFragment extends Fragment implements View.OnClickListener{
+public class BriefStudentDetailFragment extends BottomSheetDialogFragment implements View.OnClickListener{
     private static final String KEY = "KEY";
 
     private int index;
@@ -28,10 +29,14 @@ public class BriefStudentDetailFragment extends Fragment implements View.OnClick
     TextView nameView, matNoView;
 
     LinearLayout wholeLayout;
+    Student aStudent;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        index = savedInstanceState.getInt(KEY);
+        //index = savedInstanceState.getInt(KEY);
+        //aStudent = AppState.allActiveStudent.get(index);
+
+        aStudent = AppState.activeStudent;
     }
 
     @Nullable
@@ -53,12 +58,11 @@ public class BriefStudentDetailFragment extends Fragment implements View.OnClick
 
     @Override
     public void onClick(View view) {
-        AppState.activeStudent = AppState.allActiveStudent.get(index);
-        getContext().startActivity(new Intent(getContext(), StudentDetail.class));
+        AppState.activeStudent = aStudent;
+        getContext().startActivity(new Intent(getContext(), StudentDetailActivity.class));
     }
 
     void updateView() {
-        Student aStudent = AppState.allActiveStudent.get(index);
         passportView.setImageURI(Uri.parse(aStudent.getPassportUrl()));
         nameView.setText(aStudent.getFirstName()+" "+aStudent.getLastName());
         matNoView.setText(aStudent.getMatNumber());

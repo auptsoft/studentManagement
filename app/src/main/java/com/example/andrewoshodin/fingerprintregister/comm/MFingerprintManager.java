@@ -25,7 +25,7 @@ public class MFingerprintManager {
     boolean continueSending = true;
     int frac = 0;
 
-    public final static String GET_FINGERPRINT = "A";
+    public final static String REGISTER_FINGERPRINT = "R";
     public final static String VERIFY_FINGERPRINT = "V";
 
     public final static String ACK_SHORT_DATA = "A";

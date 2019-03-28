@@ -27,6 +27,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
@@ -39,6 +40,7 @@ import android.widget.Toast;
 
 import com.example.andrewoshodin.fingerprintregister.models.AppState;
 import com.example.andrewoshodin.fingerprintregister.models.Student;
+import com.example.andrewoshodin.fingerprintregister.models.TemplateIdManager;
 
 import java.io.File;
 import java.net.URI;
@@ -82,6 +84,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Register");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mFirstNameView = (AutoCompleteTextView) findViewById(R.id.first_name_edit_id);
         mLastNameView = (AutoCompleteTextView) findViewById(R.id.last_name_edit_id);
@@ -109,7 +112,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             @Override
             public void onFocusChange(View view, boolean b) {
                 //Toast.makeText(getBaseContext(), "focus change", Toast.LENGTH_LONG).show();
-                if (checkPasswordUrl(getPassportFile(mMatNumberView.getText().toString()).getPath())) {
+                if (checkPassportUrl(getPassportFile(mMatNumberView.getText().toString()).getPath())) {
                     //Toast.makeText(getBaseContext(), "match found", Toast.LENGTH_LONG).show();
                     mPassportView.setImageResource(R.drawable.ic_person_outline_black_24dp);
                     mPassportView.setImageURI(Uri.fromFile(getPassportFile(mMatNumberView.getText().toString())));
@@ -120,6 +123,15 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         initializeViewToEdit();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public void onClick(View view) {
@@ -237,7 +249,12 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         } else if (requestCode == TAKE_FINGERPRINT_CODE ) {
             if (resultCode == RESULT_OK) {
                 fingerprintTemplate = data.getStringExtra(TakeFingerprintFragment.FINGERPRINT_KEY);
-                //Toast.makeText(this, fingerprintTemplate, Toast.LENGTH_LONG).show(); //debug
+
+                String rec = TemplateIdManager.insertTemplateId(this, mMatNumberView.getText().toString(), fingerprintTemplate);
+                //Toast.makeText(this, rec, Toast.LENGTH_LONG).show(); //debug
+                Toast.makeText(this, fingerprintTemplate, Toast.LENGTH_LONG).show();
+
+                //Toast.makeText(this, TemplateIdManager.getAllTemplate(this).get(0).getTemplateId(), Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(this, "Fingerprint not taken", Toast.LENGTH_LONG).show();
             }
@@ -253,7 +270,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         }
     }
 
-    private boolean checkPasswordUrl(String passportUrl) {
+    private boolean checkPassportUrl(String passportUrl) {
         File file = new File(passportUrl);
         if (file.exists()) {
             return true;

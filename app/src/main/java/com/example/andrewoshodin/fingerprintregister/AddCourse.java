@@ -51,6 +51,10 @@ public class AddCourse extends BottomSheetDialogFragment implements View.OnClick
         String courseTitle = courseTitleEdit.getText().toString();
         String description = descriptionEdit.getText().toString();
 
+        if(!validateLength(courseCode, "Course Code", 6)) return;
+        if(!validateLength(courseTitle, "Course Title", 3)) return;
+        if(!validateLength(description, "Lecturer(s) name", 3))return;
+
         if (AppState.courseEditState) {
             long affectedRows = new Course(0, courseCode, courseTitle, description).update(getContext());
             //Toast.makeText(getContext(), affectedRows+"", Toast.LENGTH_LONG).show(); //debug
@@ -88,5 +92,22 @@ public class AddCourse extends BottomSheetDialogFragment implements View.OnClick
             //addButton.setCompoundDrawablesRelative(null,
               //      null, null, null);
         }
+    }
+
+    private boolean validateLength(String vStr, String propStr, int minLen) {
+        if (vStr.length() < minLen) {
+            Toast.makeText(getContext(), propStr + " is too short", Toast.LENGTH_LONG).show();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private boolean validateCourseCode(String courseCode) {
+        if(validateLength(courseCode, "Course Code", 6)) {
+            String dept = courseCode.substring(0, 2);
+            String code = courseCode.substring(3);
+        }
+        return  false;
     }
 }

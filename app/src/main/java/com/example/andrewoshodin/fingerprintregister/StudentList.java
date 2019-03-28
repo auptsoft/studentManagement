@@ -74,7 +74,7 @@ public class StudentList extends Fragment  implements AdapterView.OnItemClickLis
     public void updateView() {
         ArrayList<Student> students = new Student().getAll(getContext(), AppState.activeCourse.getCourseCode());
         AppState.allActiveStudent = students;
-        studentList.setAdapter(new StudentsListAdapter(getContext(), R.layout.item_view, students));
+        studentList.setAdapter(new StudentsListAdapter(getContext(), R.layout.student_item_view, students));
         if (students.size()>0){
             noStudent.setVisibility(View.GONE);
         } else {
@@ -99,12 +99,13 @@ public class StudentList extends Fragment  implements AdapterView.OnItemClickLis
 
             TextView itemTitle = (TextView)itemView.findViewById(R.id.title_view);
             TextView itemSubtitle = (TextView)itemView.findViewById(R.id.subtitle_view);
-            ImageView itemImage = (ImageView) itemView.findViewById(R.id.item_image_icon_id);
+            TextView itemTextIcon = (TextView) itemView.findViewById(R.id.item_text_icon_id);
 
-            itemTitle.setText(students.get(position).getFirstName()+" "+students.get(position).getLastName());
+            itemTitle.setText(students.get(position).getLastName()+" "+students.get(position).getFirstName());
             itemSubtitle.setText(students.get(position).getMatNumber());
 
-            itemImage.setImageResource(R.drawable.ic_person_outline_black_24dp);
+
+            itemTextIcon.setText(students.get(position).getLastName().charAt(0)+"");
 
             //itemImage.setImageURI(Uri.parse(students.get(position).getPassportUrl()));
 

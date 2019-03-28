@@ -22,6 +22,7 @@ public class AppState {
     public  static final String PREFERENCE_NAME = "PREFERENCE_NAME";
     public static final String BLUETOOTH_ADDRESS_PROPERTY = "BLUETOOTH_ADDRESS";
 
+
     public static BluetoothManager bluetoothManager;
     public static IOCommunication ioCommunication;
 
@@ -30,5 +31,11 @@ public class AppState {
     public static SharedPreferences sharedPreferences = null;
 
     public static ArrayList<Student> allActiveStudent = null;
+
+    public static final String APP_PASSWORD_KEY = "APP_PASSWORD_KEY";
+    public static final String APP_PASSWORD_DEFAULT = "abcd";
+
+    public static final int AUTHENTICATE_REQUEST_CODE = 10;
+    public static boolean authenticated = false;
 
 }

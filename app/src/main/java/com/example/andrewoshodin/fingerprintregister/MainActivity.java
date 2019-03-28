@@ -1,6 +1,8 @@
 package com.example.andrewoshodin.fingerprintregister;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -24,8 +26,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        AppState.authenticated = false;
+        startActivityForResult(new Intent(this, AuthenticateActivity.class), 5);
+
         setContentView(R.layout.activity_main);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         toolbar = (Toolbar)findViewById(R.id.main_toolbar_id);
+        //toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
         AppState.sharedPreferences = getSharedPreferences(AppState.PREFERENCE_NAME, Context.MODE_PRIVATE);
@@ -42,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
         addCourseMenu.setIcon(R.drawable.ic_add_black_24dp);
         addCourseMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
+        MenuItem changePasswordMenu = menu.add(2,2,2, "Change password");
+        changePasswordMenu.setIcon(R.drawable.ic_vpn_key_black_24dp);
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -49,11 +60,30 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case 1:
-                AppState.courseEditState = false;
-                new AddCourse().show(getSupportFragmentManager(), "Add course");
+                Intent intent = new Intent(this, AuthenticateActivity.class);
+                startActivityForResult(intent, AppState.AUTHENTICATE_REQUEST_CODE);
                 break;
+            case 2:
+                startActivity(new Intent(this, ChangePasswordActivity.class));
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == AppState.AUTHENTICATE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                AppState.courseEditState = false;
+                new AddCourse().show(getSupportFragmentManager(), "Add course");
+            }
+        } else if (requestCode == 5) {
+            if(resultCode == RESULT_OK) {
+                return;
+            } else {
+                finish();
+            }
+        }
     }
 
     public class ViewPagerAdapter extends FragmentStatePagerAdapter {
